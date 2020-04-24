@@ -585,7 +585,9 @@ void CreateDriver::publishMode()
       mode_msg_.mode = mode_msg_.MODE_FULL;
       break;
     default:
-      ROS_ERROR("[CREATE] Unknown mode detected");
+      // 2020/02/22 Commentout 
+      // ROS_ERROR("[CREATE] Unknown mode detected");
+      //
       break;
   }
   mode_pub_.publish(mode_msg_);

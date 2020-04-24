@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="config" default="$(find ca_driver)/config/default.yaml" />
-  <arg name="desc" default="true" />
+  <arg name="desc" default="false" />
 
   <node name="ca_driver" pkg="ca_driver" type="ca_driver" output="screen">
     <rosparam command="load" file="$(arg config)" />
