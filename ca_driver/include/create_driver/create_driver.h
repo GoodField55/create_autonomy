@@ -49,6 +49,9 @@ POSSIBILITY OF SUCH DAMAGE.
 #include <std_msgs/UInt8MultiArray.h>
 #include <tf/transform_broadcaster.h>
 
+/* 2020.05.08 */
+#include <std_msgs/Int32.h>
+
 #include <limits>
 #include <string>
 
@@ -77,6 +80,10 @@ private:
   std_msgs::Float32 float32_msg_;
   std_msgs::UInt16 uint16_msg_;
   std_msgs::Int16 int16_msg_;
+
+  /* 2020.05.08 */
+  std_msgs::Int32 int32_msg_;
+
   sensor_msgs::JointState joint_state_msg_;
   bool is_running_slowly_;
 
@@ -116,6 +123,10 @@ private:
   void publishBumperInfo();
   void publishWheeldrop();
 
+  /* 2020.05.08 */
+  void publishEncoderLeft();
+  void publishEncoderRight();
+
 protected:
   ros::NodeHandle nh_;
   ros::NodeHandle priv_nh_;
@@ -150,6 +161,10 @@ protected:
   ros::Publisher bumper_pub_;
   ros::Publisher wheeldrop_pub_;
   ros::Publisher wheel_joint_pub_;
+
+/* 2020.05.08 */
+  ros::Publisher encoder_left_pub_;
+  ros::Publisher encoder_right_pub_;
 
 public:
   explicit CreateDriver(ros::NodeHandle& nh);

@@ -143,6 +143,10 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh)
   wheeldrop_pub_ = nh.advertise<std_msgs::Empty>("wheeldrop", 30);
   wheel_joint_pub_ = nh.advertise<sensor_msgs::JointState>("joint_states", 10);
 
+  /* 2020.05.08 */
+  encoder_left_pub_ = nh.advertise<std_msgs::Int32>("encoder_left", 30);
+  encoder_right_pub_ = nh.advertise<std_msgs::Int32>("encoder_right", 30);
+
   // Setup diagnostics
   diagnostics_.add("Battery Status", this, &CreateDriver::updateBatteryDiagnostics);
   diagnostics_.add("Safety Status", this, &CreateDriver::updateSafetyDiagnostics);
@@ -280,6 +284,11 @@ bool CreateDriver::update()
   publishMode();
   publishBumperInfo();
   publishWheeldrop();
+
+  /* 2020.05.08 */
+  publishEncoderLeft();
+  publishEncoderRight();
+
 
   // If last velocity command was sent longer than latch duration, stop robot
   if (ros::Time::now() - last_cmd_vel_time_ >= ros::Duration(latch_duration_))
@@ -624,6 +633,22 @@ void CreateDriver::publishWheeldrop()
   if (robot_->isWheeldrop())
     wheeldrop_pub_.publish(empty_msg_);
 }
+
+
+/* 2020.05.08 */
+void CreateDriver::publishEncoderLeft()
+{
+  int32_msg_.data = robot_->getEncoderLeft();
+  encoder_left_pub_.publish(int32_msg_);
+}
+
+void CreateDriver::publishEncoderRight()
+{
+  int32_msg_.data = robot_->getEncoderRight();
+  encoder_right_pub_.publish(int32_msg_);
+}
+
+
 
 void CreateDriver::spinOnce()
 {
