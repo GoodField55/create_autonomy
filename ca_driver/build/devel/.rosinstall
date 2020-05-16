@@ -1,2 +1,0 @@
-- setup-file:
-    local-name: /home/ubuntu/catkin_ws/src/create_autonomy/ca_driver/build/devel/setup.sh
