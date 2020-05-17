@@ -45,6 +45,8 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+add_definitions(-std=c++11)
+
 add_executable(${PROJECT_NAME} src/create_driver.cpp)
 
 message(STATUS "PROJECT_NAME : ${PROJECT_NAME}")
