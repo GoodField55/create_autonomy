@@ -82,7 +82,7 @@ private:
   std_msgs::Int16 int16_msg_;
 
   /* 2020.05.08 */
-  std_msgs::Int32 int32_msg_;
+  // std_msgs::Int32 int32_msg_;
 
   sensor_msgs::JointState joint_state_msg_;
   bool is_running_slowly_;
