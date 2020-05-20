@@ -291,6 +291,8 @@ bool CreateDriver::update()
   publishEncoderLeft();
   publishEncoderRight();
 
+  /* 2020.05.20 */
+  publishCliffInfo();
 
   // If last velocity command was sent longer than latch duration, stop robot
   if (ros::Time::now() - last_cmd_vel_time_ >= ros::Duration(latch_duration_))
@@ -660,10 +662,10 @@ void CreateDriver::publishCliffInfo()
     cliff_msg_.is_cliff_right = robot_->isCliffRight();
     cliff_msg_.is_cliff_front_right = robot_->isCliffFrontRight();
 
-    cliff_msg_.cliff_signal_left = robot_->getCliffSignalLeft();
-    cliff_msg_.cliff_signal_front_left = robot_->getCliffSignalFrontLeft();
-    cliff_msg_.cliff_signal_right = robot_->getCliffSignalRight();
-    cliff_msg_.cliff_signal_front_right = robot_->getCliffSignalFrontRight();
+    cliff_msg_.cliff_signal_left = 0; //robot_->getCliffSignalLeft();
+    cliff_msg_.cliff_signal_front_left = 0; //robot_->getCliffSignalFrontLeft();
+    cliff_msg_.cliff_signal_right = 0; //robot_->getCliffSignalRight();
+    cliff_msg_.cliff_signal_front_right = 0; //robot_->getCliffSignalFrontRight();
   }
 
   cliff_pub_.publish(cliff_msg_);

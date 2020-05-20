@@ -85,6 +85,9 @@ private:
   /* 2020.05.08 */
   // std_msgs::Int32 int32_msg_;
 
+  /* 2020.05.20 */
+  ca_msgs::Cliff cliff_msg_;
+
   sensor_msgs::JointState joint_state_msg_;
   bool is_running_slowly_;
 
@@ -127,6 +130,9 @@ private:
   /* 2020.05.08 */
   void publishEncoderLeft();
   void publishEncoderRight();
+
+  /* 2020.05.20 */
+  void publishCliffInfo();
 
 protected:
   ros::NodeHandle nh_;
