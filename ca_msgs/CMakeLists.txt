@@ -13,6 +13,7 @@ add_message_files(
   DefineSong.msg
   Mode.msg
   PlaySong.msg
+  Cliff.msg
 )
 
 generate_messages(

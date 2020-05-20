@@ -146,6 +146,8 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh)
   /* 2020.05.08 */
   encoder_left_pub_ = nh.advertise<std_msgs::Int16>("encoder_left", 30);
   encoder_right_pub_ = nh.advertise<std_msgs::Int16>("encoder_right", 30);
+  /* 2020.05.20 */
+  cliff_pub_ = nh.advertise<ca_msgs::Cliff>("cliff", 30);
 
   // Setup diagnostics
   diagnostics_.add("Battery Status", this, &CreateDriver::updateBatteryDiagnostics);
@@ -648,7 +650,24 @@ void CreateDriver::publishEncoderRight()
   encoder_right_pub_.publish(int16_msg_);
 }
 
+/* 2020.05.20 */
+void CreateDriver::publishCliffInfo()
+{
+  if (model_.getVersion() >= create::V_3)
+  {
+    cliff_msg_.is_cliff_left = robot_->isCliffLeft();
+    cliff_msg_.is_cliff_front_left = robot_->isCliffFrontLeft();
+    cliff_msg_.is_cliff_right = robot_->isCliffRight();
+    cliff_msg_.is_cliff_front_right = robot_->isCliffFrontRight();
 
+    cliff_msg_.cliff_signal_left = robot_->getCliffSignalLeft();
+    cliff_msg_.cliff_signal_front_left = robot_->getCliffSignalFrontLeft();
+    cliff_msg_.cliff_signal_right = robot_->getCliffSignalRight();
+    cliff_msg_.cliff_signal_front_right = robot_->getCliffSignalFrontRight();
+  }
+
+  cliff_pub_.publish(cliff_msg_);
+}
 
 void CreateDriver::spinOnce()
 {

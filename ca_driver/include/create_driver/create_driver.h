@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "ca_msgs/Bumper.h"
 #include "ca_msgs/DefineSong.h"
 #include "ca_msgs/PlaySong.h"
+#include "ca_msgs/Cliff.h"
 
 #include "create/create.h"
 
@@ -165,6 +166,8 @@ protected:
 /* 2020.05.08 */
   ros::Publisher encoder_left_pub_;
   ros::Publisher encoder_right_pub_;
+/* 2020.05.20 */
+  ros::Publisher cliff_pub_;
 
 public:
   explicit CreateDriver(ros::NodeHandle& nh);
