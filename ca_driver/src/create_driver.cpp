@@ -148,6 +148,8 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh)
   encoder_right_pub_ = nh.advertise<std_msgs::Int16>("encoder_right", 30);
   /* 2020.05.20 */
   cliff_pub_ = nh.advertise<ca_msgs::Cliff>("cliff", 30);
+  /* 2020.05.29 */
+  boost_num_ = 10;  // loop_hz boost num
 
   // Setup diagnostics
   diagnostics_.add("Battery Status", this, &CreateDriver::updateBatteryDiagnostics);
@@ -278,28 +280,33 @@ void CreateDriver::playSongCallback(const ca_msgs::PlaySongConstPtr& msg)
 
 bool CreateDriver::update()
 {
-  publishOdom();
-  publishJointState();
-  publishBatteryInfo();
-  publishButtonPresses();
-  publishOmniChar();
-  publishMode();
-  publishBumperInfo();
-  publishWheeldrop();
+  static int num = 0;
 
-  /* 2020.05.08 */
-  publishEncoderLeft();
-  publishEncoderRight();
+  num++;
+  if ( num >= boost_num_ ){
+    publishOdom();
+    publishJointState();
+    publishBatteryInfo();
+    publishButtonPresses();
+    publishOmniChar();
+    publishMode();
+    publishBumperInfo();
+    publishWheeldrop();
+
+    /* 2020.05.08 */
+    publishEncoderLeft();
+    publishEncoderRight();
+
+    // If last velocity command was sent longer than latch duration, stop robot
+    if (ros::Time::now() - last_cmd_vel_time_ >= ros::Duration(latch_duration_))
+    {
+      robot_->drive(0, 0);
+    }
+    num = 0;
+  }
 
   /* 2020.05.20 */
   publishCliffInfo();
-
-  // If last velocity command was sent longer than latch duration, stop robot
-  if (ros::Time::now() - last_cmd_vel_time_ >= ros::Duration(latch_duration_))
-  {
-    robot_->drive(0, 0);
-  }
-
   return true;
 }
 
@@ -680,7 +687,8 @@ void CreateDriver::spinOnce()
 
 void CreateDriver::spin()
 {
-  ros::Rate rate(loop_hz_);
+  /* 2020.05.29 add loop_hz boost_num */
+  ros::Rate rate(loop_hz_ * boost_num_);
   while (ros::ok())
   {
     spinOnce();
