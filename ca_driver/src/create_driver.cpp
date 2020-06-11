@@ -48,6 +48,9 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh)
   priv_nh_.param<double>("loop_hz", loop_hz_, 10.0);
   priv_nh_.param<bool>("publish_tf", publish_tf_, true);
 
+  // 2010.06.11 //
+  priv_nh_.param<double>("boost_num", boost_num_, 10.0);
+
   if (robot_model_name == "ROOMBA_400")
   {
     model_ = create::RobotModel::ROOMBA_400;
@@ -149,7 +152,7 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh)
   /* 2020.05.20 */
   cliff_pub_ = nh.advertise<ca_msgs::Cliff>("cliff", 30);
   /* 2020.05.29 */
-  boost_num_ = 10;  // loop_hz boost num
+  // Modify to read from parame  // boost_num_ = 10;  // loop_hz boost num
 
   // Setup diagnostics
   diagnostics_.add("Battery Status", this, &CreateDriver::updateBatteryDiagnostics);
@@ -159,6 +162,10 @@ CreateDriver::CreateDriver(ros::NodeHandle& nh)
   diagnostics_.add("Driver Status", this, &CreateDriver::updateDriverDiagnostics);
 
   diagnostics_.setHardwareID(robot_model_name);
+
+
+  ROS_INFO("[CREATE] loop_hz = %5.1f", loop_hz_ );
+  ROS_INFO("[CREATE] boost_num = %5.1f", boost_num_ );
 
   ROS_INFO("[CREATE] Ready.");
 }

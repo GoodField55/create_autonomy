@@ -175,7 +175,7 @@ protected:
 /* 2020.05.20 */
   ros::Publisher cliff_pub_;
 /* 2020.05.29 */
-  int boost_num_;
+  double boost_num_;
 
 public:
   explicit CreateDriver(ros::NodeHandle& nh);
